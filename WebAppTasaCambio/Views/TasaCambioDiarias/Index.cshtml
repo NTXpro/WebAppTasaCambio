@@ -1,0 +1,53 @@
+﻿@model IEnumerable<WebAppTasaCambio.Models.TasaCambioDiaria>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Fecha)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Compra)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Venta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Proceso)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Actualizado)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fecha.ToShortDateString())
+        </td>
+        <td>
+           $ @Html.DisplayFor(modelItem => item.Compra)
+        </td>
+        <td>
+           $ @Html.DisplayFor(modelItem => item.Venta)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Proceso)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Actualizado)
+        </td>
+       
+    </tr>
+}
+
+</table>

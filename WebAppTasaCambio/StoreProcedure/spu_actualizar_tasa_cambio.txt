@@ -1,0 +1,78 @@
+﻿-- ================================================
+-- Template generated from Template Explorer using:
+-- Create Procedure (New Menu).SQL
+--
+-- Use the Specify Values for Template Parameters 
+-- command (Ctrl-Shift-M) to fill in the parameter 
+-- values below.
+--
+-- This block of comments will not be included in
+-- the definition of the procedure.
+-- ================================================
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE ERP.spu_actualizar_tasa_cambio
+	@compra decimal(14,5),
+	@venta decimal(14,5),
+	@fecha datetime
+AS
+BEGIN
+IF exists(SELECT TOP 1 tcd.ID FROM erp.TipoCambioDiario tcd WHERE tcd.Fecha = @fecha AND (tcd.VentaSunat <>@venta OR tcd.CompraSunat <> @compra ))
+BEGIN
+UPDATE ERP.TipoCambioDiario
+SET
+    ERP.TipoCambioDiario.Fecha = @fecha,
+    ERP.TipoCambioDiario.VentaSunat = @venta, 
+    ERP.TipoCambioDiario.CompraSunat = @compra, 
+    ERP.TipoCambioDiario.VentaSBS = @venta, 
+    ERP.TipoCambioDiario.CompraSBS = @compra, 
+    ERP.TipoCambioDiario.VentaComercial = @venta, 
+    ERP.TipoCambioDiario.CompraComercial = @compra, 
+    ERP.TipoCambioDiario.FechaModificado = getdate(), 
+    ERP.TipoCambioDiario.UsuarioRegistro = 'ExternalApp',
+    ERP.TipoCambioDiario.UsuarioModifico = 'ExternalApp', 
+    ERP.TipoCambioDiario.FechaRegistro = getdate() 
+WHERE Fecha = @fecha
+END
+ELSE
+BEGIN
+
+INSERT ERP.TipoCambioDiario
+(
+    Fecha,
+    VentaSunat,
+    CompraSunat,
+    VentaSBS,
+    CompraSBS,
+    VentaComercial,
+    CompraComercial,
+    FechaModificado,
+    UsuarioRegistro,
+    UsuarioModifico,
+    FechaRegistro
+)
+VALUES
+(
+    
+    @fecha, 
+    @venta, 
+    @compra, 
+    @venta, 
+    @compra, 
+    @venta, 
+    @compra, 
+    getdate(), 
+    'ExternalApp', 
+    'ExternalApp', 
+    getdate() 
+)
+END
+END
+GO
